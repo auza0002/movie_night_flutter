@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:movie_night_flutter/providers/movives_home_provider.dart';
+import 'package:movie_night_flutter/widgets/home_widgets/card_movie_home.dart';
 import 'package:movie_night_flutter/widgets/home_widgets/first_item_home.dart';
 import 'package:provider/provider.dart';
 
@@ -62,11 +62,28 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 50, bottom: 100),
-                    child: Container(
-                      color: Colors.blue,
-                      height: 300,
-                      child: const Text("Second Item Home"),
+                    padding: const EdgeInsets.only(
+                        top: 50, bottom: 100, left: 8, right: 8),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Top Rated Movies",
+                            style: CupertinoTheme.of(context)
+                                .textTheme
+                                .navTitleTextStyle,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const SizedBox(
+                          height: 300,
+                          child: CardMovie(),
+                        ),
+                      ],
                     ),
                   ),
                 ),

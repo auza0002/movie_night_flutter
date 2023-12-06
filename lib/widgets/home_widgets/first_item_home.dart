@@ -51,6 +51,7 @@ class FirstItemHome extends StatelessWidget {
                     Text(
                       maxLines: 3,
                       movies[0].results[0].overview,
+                      style: CupertinoTheme.of(context).textTheme.textStyle,
                     ),
                     const SizedBox(
                       height: 20,
