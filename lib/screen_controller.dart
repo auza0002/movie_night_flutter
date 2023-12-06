@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:movie_night_flutter/pages/favourites_screen/favourites_screen.dart';
-import 'package:movie_night_flutter/pages/home_screen/home_screen.dart';
-import 'package:movie_night_flutter/pages/slider_screen/slider_screen.dart';
+import 'package:movie_night_flutter/screens/favourites_screen/favourites_screen.dart';
+import 'package:movie_night_flutter/screens/home_screen/home_screen.dart';
+import 'package:movie_night_flutter/screens/slider_screen/slider_screen.dart';
 
 class ScreenController extends StatefulWidget {
   const ScreenController({super.key});
