@@ -4,7 +4,7 @@ import 'package:http/http.dart';
 import 'dart:convert';
 import 'dart:async';
 
-import 'package:movie_night_flutter/model/primary.dart';
+import 'package:movie_night_flutter/model/movide_model.dart';
 
 class HTTPHelperTMDB {
   final uri = Uri.parse(
