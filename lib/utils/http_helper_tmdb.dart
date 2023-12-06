@@ -7,11 +7,6 @@ import 'dart:async';
 import 'package:movie_night_flutter/model/movide_model.dart';
 
 class HTTPHelperTMDB {
-  final uri = Uri.parse(
-      'https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1');
-  final topMovies = [];
-  final topTV = [];
-
   static Future<List<Movies>> getDataMovieHomeScreen(
       String url, String key) async {
     Uri uri = Uri.parse(url);
