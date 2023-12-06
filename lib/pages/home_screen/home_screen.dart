@@ -1,12 +1,27 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:movie_night_flutter/providers/movives_home_provider.dart';
+import 'package:movie_night_flutter/widgets/home_widgets/first_item_home.dart';
+import 'package:provider/provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  bool loadedData = false;
+
+  @override
   Widget build(BuildContext context) {
+    if (context.watch<MoviesProvider>().movies.isNotEmpty) {
+      loadedData = true;
+    }
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
+        backgroundColor: const Color.fromARGB(188, 0, 0, 0),
         leading: Row(
           children: [
             Image.asset("assets/img/galaxy-spiral-shape-sm.png"),
@@ -34,14 +49,29 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-      child: const Center(
-        child: Padding(
-          padding: EdgeInsets.only(left: 5, right: 5),
-          child: Text(
-            "home page",
-          ),
-        ),
-      ),
+      child: loadedData == false
+          ? const Center(
+              child: CupertinoActivityIndicator(
+                radius: 20,
+              ),
+            )
+          : CustomScrollView(
+              slivers: [
+                const SliverToBoxAdapter(
+                  child: FirstItemHome(),
+                ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 50, bottom: 10),
+                    child: Container(
+                      color: Colors.blue,
+                      height: 300,
+                      child: const Text("Second Item Home"),
+                    ),
+                  ),
+                ),
+              ],
+            ),
     );
   }
 }
