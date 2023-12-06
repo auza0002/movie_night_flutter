@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: EdgeInsets.zero,
           onPressed: () {},
           child: const Text(
-            'Sing up',
+            'Sign up',
             style: TextStyle(
               fontSize: 15,
               color: Color.fromRGBO(237, 95, 27, 1),
