@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_night_flutter/model/movide_model.dart';
 import 'package:movie_night_flutter/providers/movives_home_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class CardMovie extends StatelessWidget {
   const CardMovie({super.key});
@@ -16,20 +16,16 @@ class CardMovie extends StatelessWidget {
       itemBuilder: (BuildContext context, int index) {
         return Column(
           children: [
-            Container(
-              margin: const EdgeInsets.all(10),
+            FadeInImage(
+              placeholder: MemoryImage(kTransparentImage),
+              fadeInCurve: Curves.easeIn,
+              image: NetworkImage(
+                context.watch<MoviesProvider>().imgePatch(
+                      movies[0].results[index].posterPath,
+                    ),
+              ),
               width: 150,
               height: 200,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(
-                    context.watch<MoviesProvider>().imgePatch(
-                          movies[0].results[index].posterPath,
-                        ),
-                  ),
-                  fit: BoxFit.cover,
-                ),
-              ),
             ),
             SizedBox(
               width: 150,
