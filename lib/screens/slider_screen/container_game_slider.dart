@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CodeScre extends StatelessWidget {
-  const CodeScre({super.key});
+class ContainerScreen extends StatelessWidget {
+  const ContainerScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-          // backgroundColor: const Color.fromARGB(188, 0, 0, 0),
+          backgroundColor: const Color.fromRGBO(237, 95, 27, 1),
           middle: const Text(
             "Lest's Play",
             style: TextStyle(
@@ -22,7 +22,7 @@ class CodeScre extends StatelessWidget {
                 color: CupertinoColors.white,
               ))),
       child: const Center(
-        child: Text("new screen"),
+        child: Text("Let's Play"),
       ),
     );
   }

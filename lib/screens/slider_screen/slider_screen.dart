@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:movie_night_flutter/screens/slider_screen/code_screen_slider.dart';
+import 'package:movie_night_flutter/screens/slider_screen/container_game_slider.dart';
 
 class SliderScreen extends StatelessWidget {
   const SliderScreen({super.key});
@@ -26,15 +26,18 @@ class SliderScreen extends StatelessWidget {
           ),
         ),
         child: Center(
-          child: CupertinoButton(
-              child: const Text("new screen"),
-              onPressed: () {
-                Navigator.of(context).push(
-                  CupertinoPageRoute(
-                    builder: (context) => const CodeScre(),
-                  ),
-                );
-              }),
+          child: Hero(
+            tag: "codeScreen",
+            child: CupertinoButton.filled(
+                child: const Text("Let's Play"),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    CupertinoPageRoute(
+                      builder: (context) => const ContainerScreen(),
+                    ),
+                  );
+                }),
+          ),
         ));
   }
 }

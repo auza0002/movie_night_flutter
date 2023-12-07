@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 class FavouritesScreen extends StatelessWidget {
   const FavouritesScreen({super.key});

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_night_flutter/model/movide_model.dart';
-import 'package:movie_night_flutter/providers/movives_home_provider.dart';
+import 'package:movie_night_flutter/providers/movives_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 
