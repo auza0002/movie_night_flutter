@@ -1,8 +1,24 @@
 import 'package:flutter/cupertino.dart';
+import 'package:movie_night_flutter/providers/game_provider.dart';
 import 'package:movie_night_flutter/screens/slider_screen/container_game_slider.dart';
+import 'package:provider/provider.dart';
 
-class SliderScreen extends StatelessWidget {
+class SliderScreen extends StatefulWidget {
   const SliderScreen({super.key});
+
+  @override
+  State<SliderScreen> createState() => _SliderScreenState();
+}
+
+class _SliderScreenState extends State<SliderScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<GameProvider>().getDeviceID();
+    context
+        .read<GameProvider>()
+        .setMyKey(context.read<GameProvider>().getMyDeviceID);
+  }
 
   @override
   Widget build(BuildContext context) {
