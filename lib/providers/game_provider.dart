@@ -17,7 +17,6 @@ class GameProvider with ChangeNotifier {
     var myKey = await HTTPHelperMovieNight().getMySessionID(myDeivce);
     _myKey = myKey['data']['code'];
     _sessionID = myKey['data']['session_id'];
-    print("my key $_myKey");
     notifyListeners();
   }
 
