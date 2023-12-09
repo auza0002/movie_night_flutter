@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:movie_night_flutter/providers/movives_provider.dart';
+import 'package:movie_night_flutter/providers/movive_provider.dart';
 import 'package:movie_night_flutter/widgets/home_widgets/card_movie_home.dart';
 import 'package:movie_night_flutter/widgets/home_widgets/first_item_home.dart';
 import 'package:provider/provider.dart';

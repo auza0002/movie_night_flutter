@@ -18,7 +18,7 @@ class GameProvider with ChangeNotifier {
   String get getRoomID => _roomID;
   bool get getIsHost => _isHost;
 
-  void setIsHost(bool isHost) async {
+  void setIsHost() async {
     var host = await HTTPHelperMovieNight().joinSession(_myDeviceID, _myKey);
     _isHost = host;
     notifyListeners();
@@ -31,7 +31,7 @@ class GameProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void getDeviceID() async {
+  void setDeviceID() async {
     var deviceID = await HTTPHelperMovieNight().initPlatformState();
     _myDeviceID = deviceID;
     notifyListeners();

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_night_flutter/model/movide_model.dart';
-import 'package:movie_night_flutter/providers/movives_provider.dart';
+import 'package:movie_night_flutter/providers/movive_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -20,7 +20,7 @@ class CardMovie extends StatelessWidget {
               placeholder: MemoryImage(kTransparentImage),
               fadeInCurve: Curves.easeIn,
               image: NetworkImage(
-                context.watch<MoviesProvider>().imgePatch(
+                context.watch<MoviesProvider>().imgPatch(
                       movies[0].results[index].posterPath,
                     ),
               ),

@@ -14,10 +14,7 @@ class _SliderScreenState extends State<SliderScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<GameProvider>().getDeviceID();
-    context
-        .read<GameProvider>()
-        .setMyKey(context.read<GameProvider>().getMyDeviceID);
+    context.read<GameProvider>().setIsHost();
   }
 
   @override
