@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
-import 'package:movie_night_flutter/providers/movives_home_provider.dart';
+import 'package:movie_night_flutter/providers/movive_provider.dart';
 import 'package:movie_night_flutter/widgets/home_widgets/card_movie_home.dart';
 import 'package:movie_night_flutter/widgets/home_widgets/first_item_home.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
-
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -79,6 +78,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         const SizedBox(
                           height: 300,
                           child: CardMovie(),
+                        ),
+                        const SizedBox(
+                          height: 20,
                         ),
                       ],
                     ),

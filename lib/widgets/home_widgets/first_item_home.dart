@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_night_flutter/model/movide_model.dart';
-import 'package:movie_night_flutter/providers/movives_home_provider.dart';
+import 'package:movie_night_flutter/providers/movive_provider.dart';
 import 'package:provider/provider.dart';
 
 class FirstItemHome extends StatelessWidget {
@@ -16,7 +16,7 @@ class FirstItemHome extends StatelessWidget {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: NetworkImage(
-              context.watch<MoviesProvider>().imgePatch(
+              context.watch<MoviesProvider>().imgPatch(
                     movies[0].results[0].backdropPath,
                   ),
             ),
