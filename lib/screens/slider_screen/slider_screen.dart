@@ -1,5 +1,6 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:movie_night_flutter/providers/game_provider.dart';
 import 'package:movie_night_flutter/screens/slider_screen/container_game_slider.dart';
 import 'package:movie_night_flutter/widgets/slider_widgets/image_swiper.dart';
@@ -15,6 +16,15 @@ class SliderScreen extends StatefulWidget {
 class _SliderScreenState extends State<SliderScreen> {
   String myKey = "";
   String myDeviceID = "";
+  String codeValue = "";
+  bool _validInput = false;
+
+  void validator(String input) {
+    bool valid = RegExp(r'^[0-9]+$').hasMatch(input) && input.length < 5;
+    setState(() {
+      _validInput = valid;
+    });
+  }
 
   @override
   void initState() {
@@ -33,6 +43,17 @@ class _SliderScreenState extends State<SliderScreen> {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         backgroundColor: const Color.fromARGB(151, 0, 0, 0),
+        trailing: CupertinoButton(
+          padding: EdgeInsets.zero,
+          onPressed: () {},
+          child: const Text(
+            'Sign up',
+            style: TextStyle(
+              fontSize: 15,
+              color: Color.fromRGBO(237, 95, 27, 1),
+            ),
+          ),
+        ),
         leading: Row(
           children: [
             Image.asset("assets/img/galaxy-spiral-shape-sm.png"),
@@ -66,7 +87,7 @@ class _SliderScreenState extends State<SliderScreen> {
             const Padding(
               padding: EdgeInsets.only(left: 8, right: 8, top: 5, bottom: 5),
               child: Text(
-                "Invite friends using the code or enter a valid room code to join and start the game.",
+                "Invite friends with a numeric code (up to 5 characters) to join, start the game, or host.",
                 style: TextStyle(
                     color: CupertinoColors.inactiveGray,
                     fontSize: 16,
@@ -108,13 +129,18 @@ class _SliderScreenState extends State<SliderScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const SizedBox(
+                  SizedBox(
                     width: 200,
                     child: CupertinoTextField(
-                      style: TextStyle(
+                      onChanged: (text) {
+                        validator(text);
+                      },
+                      maxLength: 15,
+                      keyboardType: TextInputType.number,
+                      style: const TextStyle(
                           fontSize: 20, color: Color.fromRGBO(237, 95, 27, 1)),
                       placeholder: "Enter room code",
-                      prefix: Text(
+                      prefix: const Text(
                         'Code',
                         style: TextStyle(
                           fontSize: 20,
@@ -124,14 +150,8 @@ class _SliderScreenState extends State<SliderScreen> {
                     ),
                   ),
                   CupertinoButton(
+                    onPressed: _validInput ? () {} : null,
                     child: const Icon(CupertinoIcons.arrow_turn_up_right),
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        CupertinoPageRoute(
-                          builder: (context) => const ContainerScreen(),
-                        ),
-                      );
-                    },
                   ),
                 ],
               ),
