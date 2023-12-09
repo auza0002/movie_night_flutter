@@ -27,7 +27,6 @@ class _ContainerScreenState extends State<ContainerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(context.read<GameProvider>().getIsHost);
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         backgroundColor: const Color.fromARGB(188, 0, 0, 0),
