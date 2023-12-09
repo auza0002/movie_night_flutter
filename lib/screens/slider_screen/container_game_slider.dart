@@ -1,9 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:movie_night_flutter/model/movide_model.dart';
-import 'package:movie_night_flutter/providers/game_provider.dart';
-import 'package:movie_night_flutter/providers/movive_provider.dart';
-import 'package:provider/provider.dart';
 
 class ContainerScreen extends StatefulWidget {
   const ContainerScreen({super.key});
@@ -13,18 +9,6 @@ class ContainerScreen extends StatefulWidget {
 }
 
 class _ContainerScreenState extends State<ContainerScreen> {
-  List<Movies> movieList = [];
-  String myKey = "";
-  String myDeviceID = "";
-
-  @override
-  void initState() {
-    super.initState();
-    movieList = context.read<MoviesProvider>().getMoviesGame;
-    myKey = context.read<GameProvider>().getMyKey;
-    myDeviceID = context.read<GameProvider>().getMyDeviceID;
-  }
-
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -44,12 +28,11 @@ class _ContainerScreenState extends State<ContainerScreen> {
           ),
         ),
       ),
-      child: Center(
+      child: const Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text("My key room"),
-            Text(myKey),
+            Text("hello"),
           ],
         ),
       ),

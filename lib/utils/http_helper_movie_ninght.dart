@@ -1,9 +1,7 @@
 import 'dart:convert';
-
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'dart:async';
-
 import 'package:platform_device_id/platform_device_id.dart';
 
 class HTTPHelperMovieNight {
