@@ -42,18 +42,15 @@ class _SliderScreenState extends State<SliderScreen> {
           ),
         ),
         child: Center(
-          child: Hero(
-            tag: "codeScreen",
-            child: CupertinoButton.filled(
-                child: const Text("Let's Play"),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    CupertinoPageRoute(
-                      builder: (context) => const ContainerScreen(),
-                    ),
-                  );
-                }),
-          ),
+          child: CupertinoButton.filled(
+              child: const Text("Let's Play"),
+              onPressed: () {
+                Navigator.of(context).push(
+                  CupertinoPageRoute(
+                    builder: (context) => const ContainerScreen(),
+                  ),
+                );
+              }),
         ));
   }
 }

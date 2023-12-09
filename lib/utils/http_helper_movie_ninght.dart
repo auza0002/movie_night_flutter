@@ -48,7 +48,6 @@ class HTTPHelperMovieNight {
     } on PlatformException {
       deviceId = 'Failed to get deviceId.';
     }
-    print(deviceId);
     return deviceId!;
   }
 }
