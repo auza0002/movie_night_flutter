@@ -12,7 +12,7 @@ class MoviesProvider with ChangeNotifier {
   final url =
       'https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1';
 
-  String imgPatch(String img) {
+  String imgPach(String img) {
     return _imgPath + img;
   }
 

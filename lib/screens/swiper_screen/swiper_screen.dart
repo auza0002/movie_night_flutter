@@ -2,8 +2,8 @@ import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:movie_night_flutter/providers/game_provider.dart';
-import 'package:movie_night_flutter/screens/slider_screen/container_game_slider.dart';
-import 'package:movie_night_flutter/widgets/slider_widgets/image_swiper.dart';
+import 'package:movie_night_flutter/screens/swiper_screen/container_game_swiper.dart';
+import 'package:movie_night_flutter/widgets/swiper_widgets/image_swiper.dart';
 import 'package:provider/provider.dart';
 
 class SliderScreen extends StatefulWidget {
@@ -146,7 +146,6 @@ class _SliderScreenState extends State<SliderScreen> {
                           fontSize: 20,
                         ),
                       ),
-                      // controller: _textController,
                     ),
                   ),
                   CupertinoButton(

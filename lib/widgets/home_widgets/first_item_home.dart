@@ -16,7 +16,7 @@ class FirstItemHome extends StatelessWidget {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: NetworkImage(
-              context.watch<MoviesProvider>().imgPatch(
+              context.watch<MoviesProvider>().imgPach(
                     movies[0].results[0].backdropPath,
                   ),
             ),

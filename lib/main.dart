@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_night_flutter/providers/card_provider.dart';
 import 'package:movie_night_flutter/providers/game_provider.dart';
 import 'package:movie_night_flutter/providers/movive_provider.dart';
 import 'package:movie_night_flutter/screen_controller.dart';
@@ -6,6 +7,9 @@ import 'package:provider/provider.dart';
 
 void main() {
   runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(
+      create: (_) => CardProvider(),
+    ),
     ChangeNotifierProvider(
       create: (_) => MoviesProvider(),
     ),
