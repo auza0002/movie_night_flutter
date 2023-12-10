@@ -29,7 +29,7 @@ class _ContainerGameScreenState extends State<ContainerGameScreen> {
       navigationBar: CupertinoNavigationBar(
         backgroundColor: const Color.fromARGB(188, 0, 0, 0),
         middle: const Text(
-          "Lest's Play",
+          "Let's Play",
           style: TextStyle(
             color: CupertinoColors.white,
           ),
@@ -49,8 +49,8 @@ class _ContainerGameScreenState extends State<ContainerGameScreen> {
   }
 
   Widget buildCards() {
-    final movieGames = context.read<CardProvider>().getMovies;
-
+    final provider = context.read<CardProvider>();
+    final movieGames = provider.getMovies;
     return Stack(
       children: movieGames
           .map(

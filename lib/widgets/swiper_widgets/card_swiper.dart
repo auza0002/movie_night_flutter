@@ -21,10 +21,33 @@ class SwiperCard extends StatefulWidget {
 class _SwiperCardState extends State<SwiperCard> {
   @override
   Widget build(BuildContext context) {
-    return widget.isFront ? buildFrontCard() : buildBackCard();
+    return widget.isFront ? buildFrontCard() : buildCard();
   }
 
   Widget buildFrontCard() => GestureDetector(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final provider = context.watch<CardProvider>();
+            final position = provider.position;
+            final milliseconds = provider.isDragging ? 0 : 400;
+
+            final center = constraints.smallest.center(Offset.zero);
+            final angle = provider.angle * pi / 180;
+            final rotatedMatrix = Matrix4.identity()
+              ..translate(center.dx, center.dy)
+              ..rotateZ(angle)
+              ..translate(-center.dx, -center.dy);
+
+            return AnimatedContainer(
+              curve: Curves.easeInOut,
+              duration: Duration(milliseconds: milliseconds),
+              transform: rotatedMatrix..translate(position.dx, position.dy),
+              child: Stack(children: [
+                buildCard(),
+              ]),
+            );
+          },
+        ),
         onPanStart: (details) {
           context.read<CardProvider>().startPosition(details);
         },
@@ -34,42 +57,9 @@ class _SwiperCardState extends State<SwiperCard> {
         onPanEnd: (details) {
           context.read<CardProvider>().endPosition();
         },
-        child: LayoutBuilder(builder: (context, constraints) {
-          final provider = context.watch<CardProvider>();
-          final position = provider.position;
-          final milliseconds = provider.isDragging ? 0 : 500;
-
-          final center = constraints.smallest.center(Offset.zero);
-          final angle = provider.angle * pi / 180;
-          final rotatedMatrix = Matrix4.identity()
-            ..translate(center.dx, center.dy)
-            ..rotateZ(angle)
-            ..translate(-center.dx, -center.dy);
-
-          return AnimatedContainer(
-            curve: Curves.easeInOut,
-            duration: Duration(milliseconds: milliseconds),
-            transform: rotatedMatrix..translate(position.dx, position.dy),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Container(
-                height: 600,
-                width: 350,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(context
-                        .read<MoviesProvider>()
-                        .imgPach(widget.resultItem.backdropPath)),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child: TextSwiper(resultItem: widget.resultItem),
-              ),
-            ),
-          );
-        }),
       );
-  Widget buildBackCard() => ClipRRect(
+
+  Widget buildCard() => ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: Container(
           height: 600,

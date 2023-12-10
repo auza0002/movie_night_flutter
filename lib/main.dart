@@ -32,6 +32,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     context.read<MoviesProvider>().setMovies();
     context.read<GameProvider>().setDeviceID();
+    context.read<CardProvider>().setMovies();
     context
         .read<GameProvider>()
         .setMyKey(context.read<GameProvider>().getMyDeviceID);
