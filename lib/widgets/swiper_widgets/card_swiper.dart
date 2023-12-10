@@ -76,9 +76,11 @@ class _SwiperCardState extends State<SwiperCard> {
           width: 350,
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage(context
-                  .read<MoviesProvider>()
-                  .imgPach(widget.resultItem.backdropPath)),
+              image: NetworkImage(
+                context
+                    .read<MoviesProvider>()
+                    .imgPach(widget.resultItem.posterPath),
+              ),
               fit: BoxFit.cover,
             ),
           ),

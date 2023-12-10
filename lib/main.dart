@@ -30,7 +30,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    context.read<MoviesProvider>().getDataHomeScreen();
+    context.read<MoviesProvider>().setMovies();
     context.read<GameProvider>().setDeviceID();
     context
         .read<GameProvider>()

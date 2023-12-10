@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:movie_night_flutter/model/movide_model.dart';
+import 'package:movie_night_flutter/providers/card_provider.dart';
 import 'package:movie_night_flutter/providers/movive_provider.dart';
 import 'package:movie_night_flutter/widgets/home_widgets/card_movie_home.dart';
 import 'package:movie_night_flutter/widgets/home_widgets/first_item_home.dart';
@@ -16,6 +18,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     if (context.watch<MoviesProvider>().movies.isNotEmpty) {
+      List<Movies> result = context.read<MoviesProvider>().getMovies;
+      context.read<CardProvider>().setMovies(result[0].results);
       loadedData = true;
     }
     return CupertinoPageScaffold(

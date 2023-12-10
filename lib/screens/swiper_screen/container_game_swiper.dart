@@ -1,21 +1,18 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_night_flutter/providers/card_provider.dart';
-import 'package:movie_night_flutter/providers/movive_provider.dart';
 import 'package:movie_night_flutter/widgets/swiper_widgets/card_swiper.dart';
 
 import 'package:provider/provider.dart';
 
-class ContainerScreen extends StatefulWidget {
-  const ContainerScreen({super.key});
+class ContainerGameScreen extends StatefulWidget {
+  const ContainerGameScreen({super.key});
 
   @override
-  State<ContainerScreen> createState() => _ContainerScreenState();
+  State<ContainerGameScreen> createState() => _ContainerGameScreenState();
 }
 
-class _ContainerScreenState extends State<ContainerScreen> {
+class _ContainerGameScreenState extends State<ContainerGameScreen> {
   @override
   void initState() {
     super.initState();
@@ -52,14 +49,16 @@ class _ContainerScreenState extends State<ContainerScreen> {
   }
 
   Widget buildCards() {
-    var movieGames = context.read<MoviesProvider>().getMoviesGame;
-    var listMovies = movieGames[0].results.reversed.toList();
+    final movieGames = context.read<CardProvider>().getMovies;
+
     return Stack(
-      children: listMovies
-          .map((item) => SwiperCard(
-                resultItem: item,
-                isFront: listMovies.last == item,
-              ))
+      children: movieGames
+          .map(
+            (item) => SwiperCard(
+              resultItem: item,
+              isFront: movieGames.last == item,
+            ),
+          )
           .toList(),
     );
   }

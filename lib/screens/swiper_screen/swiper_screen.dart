@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
 import 'package:movie_night_flutter/providers/game_provider.dart';
 import 'package:movie_night_flutter/screens/swiper_screen/container_game_swiper.dart';
@@ -29,7 +27,6 @@ class _SliderScreenState extends State<SliderScreen> {
   @override
   void initState() {
     super.initState();
-
     myKey = context.read<GameProvider>().getMyKey;
     myDeviceID = context.read<GameProvider>().getMyDeviceID;
   }
@@ -112,7 +109,7 @@ class _SliderScreenState extends State<SliderScreen> {
                     onPressed: () {
                       Navigator.of(context).push(
                         CupertinoPageRoute(
-                          builder: (context) => const ContainerScreen(),
+                          builder: (context) => const ContainerGameScreen(),
                         ),
                       );
                     },
