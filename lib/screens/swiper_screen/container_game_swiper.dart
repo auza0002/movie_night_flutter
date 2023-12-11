@@ -70,7 +70,3 @@ class _ContainerGameScreenState extends State<ContainerGameScreen> {
     );
   }
 }
-
-
-//  setInitalListValues();
-//     setMovies();

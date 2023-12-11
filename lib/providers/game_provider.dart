@@ -6,31 +6,60 @@ import 'package:movie_night_flutter/utils/http_helper_movie_ninght.dart';
 class GameProvider with ChangeNotifier {
   String _myDeviceID = '';
   String _myKey = '';
+  String _mySessionID = '';
   String _sessionID = '';
   String _roomID = '';
   bool _isHost = false;
+  String _roomOwner = '';
 
+  String get getMySessionID => _mySessionID;
   String get getMyDeviceID => _myDeviceID;
   String get getMyKey => _myKey;
   String get getSessionID => _sessionID;
   String get getRoomID => _roomID;
   bool get getIsHost => _isHost;
+  String get getRoomOwner => _roomOwner;
 
   void setIsHost() async {
     var host = await HTTPHelperMovieNight().joinSession(_myDeviceID, _myKey);
-    _isHost = host;
+    if (host != "") {
+      _isHost = true;
+    } else {
+      _isHost = false;
+    }
     notifyListeners();
   }
 
   Future<bool> joinSession(String code) async {
     var response = await HTTPHelperMovieNight().joinSession(_myDeviceID, code);
-    return response;
+    if (response != "") {
+      _sessionID = response;
+      notifyListeners();
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void voteMovie(
+    String movieID,
+    bool vote,
+  ) async {
+    String sessionID = "";
+    if (_roomOwner == "host") {
+      sessionID = _mySessionID;
+    } else {
+      sessionID = _sessionID;
+    }
+    var response =
+        await HTTPHelperMovieNight().voteMovie(sessionID, movieID, vote);
+    print(response);
   }
 
   void setMyKey(String myDeivce) async {
-    var myKey = await HTTPHelperMovieNight().getMySessionID(myDeivce);
-    _myKey = myKey['data']['code'];
-    _sessionID = myKey['data']['session_id'];
+    var response = await HTTPHelperMovieNight().getMySessionID(myDeivce);
+    _myKey = response['data']['code'];
+    _mySessionID = response['data']['session_id'];
     notifyListeners();
   }
 
@@ -40,8 +69,8 @@ class GameProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setSessionID(String sessionID) {
-    _sessionID = sessionID;
+  void setRoomOwner(String owner) {
+    _roomOwner = owner;
     notifyListeners();
   }
 }

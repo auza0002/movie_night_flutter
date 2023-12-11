@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:movie_night_flutter/model/movide_model.dart';
+import 'package:movie_night_flutter/providers/game_provider.dart';
 import 'package:movie_night_flutter/utils/http_helper_tmdb.dart';
 
 enum CardStatus { like, dislike }
@@ -59,13 +60,15 @@ class CardProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void endPosition(int id) {
+  bool endPosition(int id) {
     _isDragging = false;
+    bool result = false;
     final status = getStatus();
     switch (status) {
       case CardStatus.like:
         like();
         moviesLiked.add(movies.firstWhere((element) => element.id == id));
+        result = true;
         notifyListeners();
         break;
       case CardStatus.dislike:
@@ -76,6 +79,7 @@ class CardProvider extends ChangeNotifier {
         resetPosition();
     }
     notifyListeners();
+    return result;
   }
 
   void resetPosition() {
@@ -102,6 +106,7 @@ class CardProvider extends ChangeNotifier {
     _angle = -20;
     _position -= Offset(2 * _screenSize.width, 0);
     _nextCard();
+    Fluttertoast.cancel();
     notifyListeners();
   }
 
@@ -124,7 +129,7 @@ class CardProvider extends ChangeNotifier {
 
   Future _nextCard() async {
     await Future.delayed(
-      const Duration(milliseconds: 300),
+      const Duration(milliseconds: 350),
     );
     movies.removeLast();
     resetPosition();

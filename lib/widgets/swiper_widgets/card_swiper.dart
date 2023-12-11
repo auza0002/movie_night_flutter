@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:movie_night_flutter/model/movide_model.dart';
 import 'package:movie_night_flutter/providers/card_provider.dart';
+import 'package:movie_night_flutter/providers/game_provider.dart';
 import 'package:movie_night_flutter/providers/movive_provider.dart';
 import 'package:movie_night_flutter/widgets/swiper_widgets/text_swiper.dart';
 import 'package:provider/provider.dart';
@@ -16,13 +17,17 @@ class SwiperCard extends StatefulWidget {
 }
 
 class _SwiperCardState extends State<SwiperCard> {
+  String host = "";
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final size = MediaQuery.of(context).size;
       final provider = context.read<CardProvider>();
+      host = context.read<GameProvider>().getRoomOwner;
       provider.setScreenSize(size);
+      print(host);
     });
   }
 
@@ -60,7 +65,11 @@ class _SwiperCardState extends State<SwiperCard> {
           context.read<CardProvider>().updatePosition(details);
         },
         onPanEnd: (details) {
-          context.read<CardProvider>().endPosition(widget.resultItem.id);
+          bool result =
+              context.read<CardProvider>().endPosition(widget.resultItem.id);
+          context
+              .read<GameProvider>()
+              .voteMovie(widget.resultItem.id.toString(), result);
         },
       );
 

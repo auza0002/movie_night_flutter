@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:movie_night_flutter/providers/card_provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:movie_night_flutter/providers/game_provider.dart';
 import 'package:movie_night_flutter/screens/swiper_screen/container_game_swiper.dart';
 import 'package:movie_night_flutter/widgets/swiper_widgets/image_swiper.dart';
@@ -16,9 +16,12 @@ class _SliderScreenState extends State<SliderScreen> {
   String myKey = "";
   String myDeviceID = "";
   String codeValue = "";
+  String mySessionID = "";
+  String sessionID = "";
 
+  FToast fToast = FToast();
   void validator(String input) {
-    bool valid = RegExp(r'^[0-9]+$').hasMatch(input) && input.length < 5;
+    bool valid = RegExp(r'^[0-9]+$').hasMatch(input) && input.length == 4;
     if (valid) {
       codeValue = input;
     } else {
@@ -29,8 +32,11 @@ class _SliderScreenState extends State<SliderScreen> {
   @override
   void initState() {
     super.initState();
+    fToast.init(context);
     myKey = context.read<GameProvider>().getMyKey;
     myDeviceID = context.read<GameProvider>().getMyDeviceID;
+    mySessionID = context.read<GameProvider>().getMySessionID;
+    sessionID = context.read<GameProvider>().getSessionID;
   }
 
   @override
@@ -109,6 +115,7 @@ class _SliderScreenState extends State<SliderScreen> {
                   CupertinoButton(
                     child: const Icon(CupertinoIcons.gamecontroller_alt_fill),
                     onPressed: () {
+                      context.read<GameProvider>().setRoomOwner("host");
                       Navigator.of(context).push(
                         CupertinoPageRoute(
                           builder: (context) => const ContainerGameScreen(),
@@ -156,11 +163,14 @@ class _SliderScreenState extends State<SliderScreen> {
                             .read<GameProvider>()
                             .joinSession(codeValue);
                         if (reponse) {
+                          context.read<GameProvider>().setRoomOwner("guest");
                           Navigator.of(context).push(
                             CupertinoPageRoute(
                               builder: (context) => const ContainerGameScreen(),
                             ),
                           );
+                        } else {
+                          _showToast();
                         }
                       }
                     },
@@ -173,5 +183,41 @@ class _SliderScreenState extends State<SliderScreen> {
         ),
       ),
     );
+  }
+
+  _showToast() {
+    Widget toast = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0),
+        color: const Color.fromRGBO(98, 98, 98, 1),
+      ),
+      child: const Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            CupertinoIcons.xmark_circle_fill,
+            color: CupertinoColors.white,
+          ),
+          SizedBox(
+            width: 12.0,
+          ),
+          Text(
+            "The room was not found",
+            style: TextStyle(color: CupertinoColors.white),
+          ),
+        ],
+      ),
+    );
+    fToast.showToast(
+        child: toast,
+        toastDuration: const Duration(seconds: 3),
+        positionedToastBuilder: (context, child) {
+          return Positioned(
+            bottom: 150.0,
+            left: 70.0,
+            child: child,
+          );
+        });
   }
 }
