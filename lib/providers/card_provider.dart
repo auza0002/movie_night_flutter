@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-
 import 'package:movie_night_flutter/model/movide_model.dart';
 import 'package:movie_night_flutter/utils/http_helper_tmdb.dart';
 
@@ -12,6 +11,8 @@ class CardProvider extends ChangeNotifier {
       'https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1';
 
   List<Result> movies = [];
+  List<Result> moviesLiked = [];
+  List<Result> moviesDisliked = [];
 
   bool _isDragging = false;
   double _angle = 0;
@@ -22,6 +23,8 @@ class CardProvider extends ChangeNotifier {
   Offset get position => _position;
   double get angle => _angle;
   List<Result> get getMovies => movies;
+  List<Result> get getMoviesLiked => moviesLiked;
+  List<Result> get getMoviesDisliked => moviesDisliked;
 
   void setScreenSize(Size screenSize) => _screenSize = screenSize;
 
@@ -33,7 +36,7 @@ class CardProvider extends ChangeNotifier {
   void setMovies() async {
     List<Movies> movies =
         await HTTPHelperTMDB.getDataMovieHomeScreen(url, _myKey);
-    this.movies = movies[0].results;
+    this.movies = movies[0].results.reversed.toList();
     notifyListeners();
   }
 
@@ -50,16 +53,12 @@ class CardProvider extends ChangeNotifier {
     _isDragging = false;
     notifyListeners();
     final status = getStatus();
-    // if (status != null) {
-    //   Fluttertoast.cancel();
-    //   Fluttertoast.showToast(
-    //     msg: status.toString().split('.').last.toUpperCase(),
-    //     fontSize: 36,
-    //   );
-    // }
     switch (status) {
       case CardStatus.like:
         like();
+        break;
+      case CardStatus.dislike:
+        dislike();
         break;
       default:
         resetPosition();
@@ -76,7 +75,6 @@ class CardProvider extends ChangeNotifier {
 
   CardStatus? getStatus() {
     final x = _position.dx;
-    final y = _position.dy;
     final delta = 100;
 
     if (x >= delta) {
@@ -90,7 +88,6 @@ class CardProvider extends ChangeNotifier {
     _angle = -20;
     _position -= Offset(2 * _screenSize.width, 0);
     _nextCard();
-
     notifyListeners();
   }
 
@@ -98,14 +95,14 @@ class CardProvider extends ChangeNotifier {
     _angle = 20;
     _position += Offset(2 * _screenSize.width, 0);
     _nextCard();
-
     notifyListeners();
   }
 
   Future _nextCard() async {
     if (movies.isEmpty) return;
-    print("movies length: ${movies.length}");
-    await Future.delayed(const Duration(milliseconds: 200));
+    await Future.delayed(
+      const Duration(milliseconds: 300),
+    );
     movies.removeLast();
     resetPosition();
   }

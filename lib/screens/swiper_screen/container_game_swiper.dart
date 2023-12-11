@@ -14,17 +14,8 @@ class ContainerGameScreen extends StatefulWidget {
 
 class _ContainerGameScreenState extends State<ContainerGameScreen> {
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final size = MediaQuery.of(context).size;
-      final provider = context.read<CardProvider>();
-      provider.setScreenSize(size);
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final provider = context.watch<CardProvider>().getMovies;
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         backgroundColor: const Color.fromARGB(188, 0, 0, 0),
@@ -43,23 +34,16 @@ class _ContainerGameScreenState extends State<ContainerGameScreen> {
         ),
       ),
       child: Center(
-        child: buildCards(),
+        child: Stack(
+          children: [
+            for (var i = 0; i < provider.length; i++)
+              SwiperCard(
+                resultItem: provider[i],
+                isFront: provider.last == provider[i],
+              ),
+          ],
+        ),
       ),
-    );
-  }
-
-  Widget buildCards() {
-    final provider = context.read<CardProvider>();
-    final movieGames = provider.getMovies;
-    return Stack(
-      children: movieGames
-          .map(
-            (item) => SwiperCard(
-              resultItem: item,
-              isFront: movieGames.last == item,
-            ),
-          )
-          .toList(),
     );
   }
 }

@@ -20,8 +20,22 @@ class SwiperCard extends StatefulWidget {
 
 class _SwiperCardState extends State<SwiperCard> {
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final size = MediaQuery.of(context).size;
+      final provider = context.read<CardProvider>();
+      provider.setScreenSize(size);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return widget.isFront ? buildFrontCard() : buildCard();
+    if (widget.isFront) {
+      return buildFrontCard();
+    } else {
+      return buildCard();
+    }
   }
 
   Widget buildFrontCard() => GestureDetector(
@@ -29,7 +43,7 @@ class _SwiperCardState extends State<SwiperCard> {
           builder: (context, constraints) {
             final provider = context.watch<CardProvider>();
             final position = provider.position;
-            final milliseconds = provider.isDragging ? 0 : 400;
+            final milliseconds = provider.isDragging ? 0 : 200;
 
             final center = constraints.smallest.center(Offset.zero);
             final angle = provider.angle * pi / 180;
