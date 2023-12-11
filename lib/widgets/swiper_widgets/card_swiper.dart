@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:movie_night_flutter/model/movide_model.dart';
 import 'package:movie_night_flutter/providers/card_provider.dart';
 import 'package:movie_night_flutter/providers/movive_provider.dart';
@@ -9,10 +8,8 @@ import 'package:movie_night_flutter/widgets/swiper_widgets/text_swiper.dart';
 import 'package:provider/provider.dart';
 
 class SwiperCard extends StatefulWidget {
-  const SwiperCard(
-      {super.key, required this.resultItem, required this.isFront});
+  const SwiperCard({super.key, required this.resultItem});
   final Result resultItem;
-  final bool isFront;
 
   @override
   State<SwiperCard> createState() => _SwiperCardState();
@@ -52,9 +49,7 @@ class _SwiperCardState extends State<SwiperCard> {
               curve: Curves.easeInOut,
               duration: Duration(milliseconds: milliseconds),
               transform: rotatedMatrix..translate(position.dx, position.dy),
-              child: Stack(children: [
-                buildCard(),
-              ]),
+              child: buildCard(),
             );
           },
         ),
@@ -73,8 +68,9 @@ class _SwiperCardState extends State<SwiperCard> {
         borderRadius: BorderRadius.circular(20),
         child: Container(
           height: 600,
-          width: 350,
+          width: 300,
           decoration: BoxDecoration(
+            color: CupertinoColors.inactiveGray,
             image: DecorationImage(
               image: NetworkImage(
                 context

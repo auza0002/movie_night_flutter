@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:http/http.dart';
 import 'dart:convert';
 import 'dart:async';
@@ -8,8 +7,8 @@ import 'package:movie_night_flutter/model/movide_model.dart';
 
 class HTTPHelperTMDB {
   static Future<List<Movies>> getDataMovieHomeScreen(
-      String url, String key) async {
-    Uri uri = Uri.parse(url);
+      String url, String key, int count) async {
+    Uri uri = Uri.parse(url + count.toString());
     String myKey = key;
     Response response = await get(uri, headers: {
       HttpHeaders.authorizationHeader: 'Authorization: Bearer $myKey',
@@ -20,7 +19,7 @@ class HTTPHelperTMDB {
       var movies = Movies.fromJson(data);
       return [movies];
     } else {
-      throw Exception("Did not get a valid response");
+      return [];
     }
   }
 }

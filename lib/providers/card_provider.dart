@@ -1,14 +1,16 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:movie_night_flutter/model/movide_model.dart';
 import 'package:movie_night_flutter/utils/http_helper_tmdb.dart';
 
 enum CardStatus { like, dislike }
 
 class CardProvider extends ChangeNotifier {
+  int count = 0;
   final _myKey =
       "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkMWEyMTM3M2ZmNGEzOGQ3NTliM2UxZmRkNGI0YzA5ZiIsInN1YiI6IjYzOGY2YmNmMDQ3MzNmMDA4NWQwYWFkMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.MoHcQDxp_anG4kiYxxLgZ4hywHvE670dDFZcP6ixJ_k";
   final url =
-      'https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1';
+      'https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=';
 
   List<Result> movies = [];
   List<Result> moviesLiked = [];
@@ -36,11 +38,14 @@ class CardProvider extends ChangeNotifier {
   void setInitalListValues() {
     moviesLiked = [];
     moviesDisliked = [];
+    movies = [];
+    count = 0;
   }
 
   void setMovies() async {
+    count++;
     List<Movies> movies =
-        await HTTPHelperTMDB.getDataMovieHomeScreen(url, _myKey);
+        await HTTPHelperTMDB.getDataMovieHomeScreen(url, _myKey, count++);
     this.movies = movies[0].results.reversed.toList();
     notifyListeners();
   }
@@ -90,6 +95,7 @@ class CardProvider extends ChangeNotifier {
     } else if (x <= -delta) {
       return CardStatus.dislike;
     }
+    return null;
   }
 
   void dislike() {
@@ -103,11 +109,20 @@ class CardProvider extends ChangeNotifier {
     _angle = 20;
     _position += Offset(2 * _screenSize.width, 0);
     _nextCard();
+    Fluttertoast.showToast(
+      msg: "Movie added to liked list",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: const Color.fromRGBO(98, 98, 98, 1),
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+
     notifyListeners();
   }
 
   Future _nextCard() async {
-    if (movies.isEmpty) return;
     await Future.delayed(
       const Duration(milliseconds: 300),
     );

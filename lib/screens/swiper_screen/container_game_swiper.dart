@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 
 class ContainerGameScreen extends StatefulWidget {
   const ContainerGameScreen({super.key});
-
   @override
   State<ContainerGameScreen> createState() => _ContainerGameScreenState();
 }
@@ -16,6 +15,9 @@ class _ContainerGameScreenState extends State<ContainerGameScreen> {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<CardProvider>();
+    if (provider.getMovies.isEmpty) {
+      provider.setMovies();
+    }
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         backgroundColor: const Color.fromARGB(188, 0, 0, 0),
@@ -28,9 +30,7 @@ class _ContainerGameScreenState extends State<ContainerGameScreen> {
         ),
         leading: IconButton(
           onPressed: () {
-            context.read<CardProvider>().setMovies();
-            context.read<CardProvider>().setInitalListValues();
-
+            provider.setInitalListValues();
             Navigator.of(context).pop();
           },
           icon: const Icon(
@@ -42,19 +42,35 @@ class _ContainerGameScreenState extends State<ContainerGameScreen> {
       child: Center(
         child: Builder(
           builder: (BuildContext context) {
-            return Stack(
-              children: [
-                for (var i = 0; i < provider.getMovies.length; i++)
-                  SwiperCard(
-                    key: ValueKey(provider.getMovies[i].id),
-                    resultItem: provider.getMovies[i],
-                    isFront: provider.getMovies.last == provider.getMovies[i],
+            if (provider.getMovies.isEmpty) {
+              return const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Loadind ..."),
+                  SizedBox(
+                    height: 20,
                   ),
-              ],
-            );
+                  CupertinoActivityIndicator(),
+                ],
+              );
+            } else {
+              return Stack(
+                children: [
+                  for (var i = 0; i < provider.getMovies.length; i++)
+                    SwiperCard(
+                      key: ValueKey(provider.getMovies[i].id),
+                      resultItem: provider.getMovies[i],
+                    ),
+                ],
+              );
+            }
           },
         ),
       ),
     );
   }
 }
+
+
+//  setInitalListValues();
+//     setMovies();

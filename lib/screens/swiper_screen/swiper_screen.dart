@@ -31,7 +31,6 @@ class _SliderScreenState extends State<SliderScreen> {
     super.initState();
     myKey = context.read<GameProvider>().getMyKey;
     myDeviceID = context.read<GameProvider>().getMyDeviceID;
-    context.read<CardProvider>().setMovies();
   }
 
   @override
