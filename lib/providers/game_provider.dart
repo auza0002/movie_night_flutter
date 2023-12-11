@@ -10,8 +10,6 @@ class GameProvider with ChangeNotifier {
   String _roomID = '';
   bool _isHost = false;
 
-//start-session?device_id=123
-
   String get getMyDeviceID => _myDeviceID;
   String get getMyKey => _myKey;
   String get getSessionID => _sessionID;
@@ -22,6 +20,11 @@ class GameProvider with ChangeNotifier {
     var host = await HTTPHelperMovieNight().joinSession(_myDeviceID, _myKey);
     _isHost = host;
     notifyListeners();
+  }
+
+  Future<bool> joinSession(String code) async {
+    var response = await HTTPHelperMovieNight().joinSession(_myDeviceID, code);
+    return response;
   }
 
   void setMyKey(String myDeivce) async {

@@ -15,10 +15,11 @@ class ContainerGameScreen extends StatefulWidget {
 class _ContainerGameScreenState extends State<ContainerGameScreen> {
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<CardProvider>().getMovies;
+    final provider = context.watch<CardProvider>();
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         backgroundColor: const Color.fromARGB(188, 0, 0, 0),
+        trailing: Text("Liked ${provider.getMoviesLiked.length}"),
         middle: const Text(
           "Let's Play",
           style: TextStyle(
@@ -26,7 +27,12 @@ class _ContainerGameScreenState extends State<ContainerGameScreen> {
           ),
         ),
         leading: IconButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () {
+            context.read<CardProvider>().setMovies();
+            context.read<CardProvider>().setInitalListValues();
+
+            Navigator.of(context).pop();
+          },
           icon: const Icon(
             CupertinoIcons.back,
             color: Color.fromRGBO(237, 95, 27, 1),
@@ -36,10 +42,10 @@ class _ContainerGameScreenState extends State<ContainerGameScreen> {
       child: Center(
         child: Stack(
           children: [
-            for (var i = 0; i < provider.length; i++)
+            for (var i = 0; i < provider.getMovies.length; i++)
               SwiperCard(
-                resultItem: provider[i],
-                isFront: provider.last == provider[i],
+                resultItem: provider.getMovies[i],
+                isFront: provider.getMovies.last == provider.getMovies[i],
               ),
           ],
         ),

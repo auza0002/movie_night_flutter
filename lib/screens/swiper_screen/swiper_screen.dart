@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:movie_night_flutter/providers/card_provider.dart';
 import 'package:movie_night_flutter/providers/game_provider.dart';
 import 'package:movie_night_flutter/screens/swiper_screen/container_game_swiper.dart';
+import 'package:movie_night_flutter/utils/http_helper_movie_ninght.dart';
 import 'package:movie_night_flutter/widgets/swiper_widgets/image_swiper.dart';
 import 'package:provider/provider.dart';
 
@@ -15,20 +17,23 @@ class _SliderScreenState extends State<SliderScreen> {
   String myKey = "";
   String myDeviceID = "";
   String codeValue = "";
-  bool _validInput = false;
 
   void validator(String input) {
     bool valid = RegExp(r'^[0-9]+$').hasMatch(input) && input.length < 5;
-    setState(() {
-      _validInput = valid;
-    });
+    if (valid) {
+      codeValue = input;
+    } else {
+      codeValue = "";
+    }
   }
 
   @override
   void initState() {
     super.initState();
+    print("initState");
     myKey = context.read<GameProvider>().getMyKey;
     myDeviceID = context.read<GameProvider>().getMyDeviceID;
+    context.read<CardProvider>().setMovies();
   }
 
   @override
@@ -129,8 +134,10 @@ class _SliderScreenState extends State<SliderScreen> {
                   SizedBox(
                     width: 200,
                     child: CupertinoTextField(
-                      onChanged: (text) {
-                        validator(text);
+                      onChanged: (value) {
+                        setState(() {
+                          validator(value);
+                        });
                       },
                       maxLength: 15,
                       keyboardType: TextInputType.number,
@@ -146,7 +153,20 @@ class _SliderScreenState extends State<SliderScreen> {
                     ),
                   ),
                   CupertinoButton(
-                    onPressed: _validInput ? () {} : null,
+                    onPressed: () async {
+                      if (codeValue != "") {
+                        final reponse = await context
+                            .read<GameProvider>()
+                            .joinSession(codeValue);
+                        if (reponse) {
+                          Navigator.of(context).push(
+                            CupertinoPageRoute(
+                              builder: (context) => const ContainerGameScreen(),
+                            ),
+                          );
+                        }
+                      }
+                    },
                     child: const Icon(CupertinoIcons.arrow_turn_up_right),
                   ),
                 ],

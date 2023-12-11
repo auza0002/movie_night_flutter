@@ -33,6 +33,11 @@ class CardProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setInitalListValues() {
+    moviesLiked = [];
+    moviesDisliked = [];
+  }
+
   void setMovies() async {
     List<Movies> movies =
         await HTTPHelperTMDB.getDataMovieHomeScreen(url, _myKey);
@@ -49,20 +54,22 @@ class CardProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void endPosition() {
+  void endPosition(int id) {
     _isDragging = false;
-    notifyListeners();
     final status = getStatus();
     switch (status) {
       case CardStatus.like:
         like();
+        moviesLiked.add(movies.firstWhere((element) => element.id == id));
         break;
       case CardStatus.dislike:
         dislike();
+        moviesDisliked.add(movies.firstWhere((element) => element.id == id));
         break;
       default:
         resetPosition();
     }
+    notifyListeners();
   }
 
   void resetPosition() {
