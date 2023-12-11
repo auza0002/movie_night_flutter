@@ -31,11 +31,7 @@ class _SwiperCardState extends State<SwiperCard> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.isFront) {
-      return buildFrontCard();
-    } else {
-      return buildCard();
-    }
+    return buildFrontCard();
   }
 
   Widget buildFrontCard() => GestureDetector(

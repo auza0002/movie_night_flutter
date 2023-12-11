@@ -61,6 +61,7 @@ class CardProvider extends ChangeNotifier {
       case CardStatus.like:
         like();
         moviesLiked.add(movies.firstWhere((element) => element.id == id));
+        notifyListeners();
         break;
       case CardStatus.dislike:
         dislike();

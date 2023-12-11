@@ -40,14 +40,19 @@ class _ContainerGameScreenState extends State<ContainerGameScreen> {
         ),
       ),
       child: Center(
-        child: Stack(
-          children: [
-            for (var i = 0; i < provider.getMovies.length; i++)
-              SwiperCard(
-                resultItem: provider.getMovies[i],
-                isFront: provider.getMovies.last == provider.getMovies[i],
-              ),
-          ],
+        child: Builder(
+          builder: (BuildContext context) {
+            return Stack(
+              children: [
+                for (var i = 0; i < provider.getMovies.length; i++)
+                  SwiperCard(
+                    key: ValueKey(provider.getMovies[i].id),
+                    resultItem: provider.getMovies[i],
+                    isFront: provider.getMovies.last == provider.getMovies[i],
+                  ),
+              ],
+            );
+          },
         ),
       ),
     );
