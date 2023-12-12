@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:movie_night_flutter/model/movide_model.dart';
-import 'package:movie_night_flutter/providers/game_provider.dart';
 import 'package:movie_night_flutter/utils/http_helper_tmdb.dart';
 
 enum CardStatus { like, dislike }

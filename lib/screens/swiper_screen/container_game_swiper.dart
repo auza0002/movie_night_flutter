@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_night_flutter/providers/card_provider.dart';
+import 'package:movie_night_flutter/providers/game_provider.dart';
+import 'package:movie_night_flutter/screens/swiper_screen/final_screen_swiper.dart';
 import 'package:movie_night_flutter/widgets/swiper_widgets/card_swiper.dart';
 
 import 'package:provider/provider.dart';
@@ -15,6 +17,7 @@ class _ContainerGameScreenState extends State<ContainerGameScreen> {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<CardProvider>();
+    final gameProvider = context.watch<GameProvider>();
     if (provider.getMovies.isEmpty) {
       provider.setMovies();
     }
@@ -40,32 +43,34 @@ class _ContainerGameScreenState extends State<ContainerGameScreen> {
         ),
       ),
       child: Center(
-        child: Builder(
-          builder: (BuildContext context) {
-            if (provider.getMovies.isEmpty) {
-              return const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Loadind ..."),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  CupertinoActivityIndicator(),
-                ],
-              );
-            } else {
-              return Stack(
-                children: [
-                  for (var i = 0; i < provider.getMovies.length; i++)
-                    SwiperCard(
-                      key: ValueKey(provider.getMovies[i].id),
-                      resultItem: provider.getMovies[i],
-                    ),
-                ],
-              );
-            }
-          },
-        ),
+        child: gameProvider.getStatus == GameMatchStatus.match
+            ? const FinalScreen()
+            : Builder(
+                builder: (BuildContext context) {
+                  if (provider.getMovies.isEmpty) {
+                    return const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Loading ..."),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        CupertinoActivityIndicator(),
+                      ],
+                    );
+                  } else {
+                    return Stack(
+                      children: [
+                        for (var i = 0; i < provider.getMovies.length; i++)
+                          SwiperCard(
+                            key: ValueKey(provider.getMovies[i].id),
+                            resultItem: provider.getMovies[i],
+                          ),
+                      ],
+                    );
+                  }
+                },
+              ),
       ),
     );
   }

@@ -3,6 +3,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:movie_night_flutter/utils/http_helper_movie_ninght.dart';
 
+enum GameMatchStatus { match, noMatch }
+
 class GameProvider with ChangeNotifier {
   String _myDeviceID = '';
   String _myKey = '';
@@ -11,7 +13,9 @@ class GameProvider with ChangeNotifier {
   String _roomID = '';
   bool _isHost = false;
   String _roomOwner = '';
+  GameMatchStatus _gameStatus = GameMatchStatus.noMatch;
 
+  GameMatchStatus get getStatus => _gameStatus;
   String get getMySessionID => _mySessionID;
   String get getMyDeviceID => _myDeviceID;
   String get getMyKey => _myKey;
@@ -53,7 +57,12 @@ class GameProvider with ChangeNotifier {
     }
     var response =
         await HTTPHelperMovieNight().voteMovie(sessionID, movieID, vote);
-    print(response);
+    if (response['data']['match'] == true) {
+      _gameStatus = GameMatchStatus.match;
+    } else {
+      _gameStatus = GameMatchStatus.noMatch;
+    }
+    notifyListeners();
   }
 
   void setMyKey(String myDeivce) async {

@@ -27,7 +27,6 @@ class _SwiperCardState extends State<SwiperCard> {
       final provider = context.read<CardProvider>();
       host = context.read<GameProvider>().getRoomOwner;
       provider.setScreenSize(size);
-      print(host);
     });
   }
 
@@ -77,7 +76,7 @@ class _SwiperCardState extends State<SwiperCard> {
         borderRadius: BorderRadius.circular(20),
         child: Container(
           height: 600,
-          width: 300,
+          width: 400,
           decoration: BoxDecoration(
             color: CupertinoColors.inactiveGray,
             image: DecorationImage(
