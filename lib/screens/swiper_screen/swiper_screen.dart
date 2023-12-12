@@ -30,7 +30,6 @@ class _SliderScreenState extends State<SliderScreen> {
   void initState() {
     super.initState();
     fToast.init(context);
-    // context.read<GameProvider>().setMyKey(myDeviceID);
   }
 
   @override
