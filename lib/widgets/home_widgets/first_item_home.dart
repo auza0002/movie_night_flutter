@@ -43,6 +43,7 @@ class FirstItemHome extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
+                      maxLines: 2,
                       movies[0].results[0].title,
                       style: CupertinoTheme.of(context)
                           .textTheme

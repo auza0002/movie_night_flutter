@@ -2,6 +2,10 @@ import 'dart:async';
 
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_night_flutter/model/movide_model.dart';
+import 'package:movie_night_flutter/providers/card_provider.dart';
+import 'package:movie_night_flutter/widgets/swiper_widgets/match_container.dart';
+import 'package:provider/provider.dart';
 
 class FinalScreen extends StatefulWidget {
   const FinalScreen({Key? key}) : super(key: key);
@@ -35,6 +39,9 @@ class _FinalScreenState extends State<FinalScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.read<CardProvider>();
+    List<Result> match = provider.findMatchMovieOnList();
+
     return Stack(
       alignment: Alignment.topCenter,
       children: [
@@ -43,20 +50,14 @@ class _FinalScreenState extends State<FinalScreen> {
           confettiController: controller,
           shouldLoop: true,
         ),
-        const Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Final Screen",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 30,
-                ),
-              ),
-              Text("There was a match!"),
-            ],
+        Padding(
+          padding: const EdgeInsets.only(top: 125, left: 8, right: 8),
+          child: Center(
+            child: Column(
+              children: [
+                MatchContainer(match: match),
+              ],
+            ),
           ),
         ),
       ],

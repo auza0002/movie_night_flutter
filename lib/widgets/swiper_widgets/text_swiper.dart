@@ -34,6 +34,24 @@ class TextSwiper extends StatelessWidget {
             resultItem.overview,
             style: CupertinoTheme.of(context).textTheme.textStyle,
           ),
+          const SizedBox(
+            height: 10,
+          ),
+          Row(
+            children: [
+              const Icon(
+                CupertinoIcons.star_fill,
+                color: CupertinoColors.systemYellow,
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Text(
+                resultItem.voteAverage.toString(),
+                style: CupertinoTheme.of(context).textTheme.navTitleTextStyle,
+              ),
+            ],
+          )
         ],
       ),
     );

@@ -15,18 +15,27 @@ class CardProvider extends ChangeNotifier {
   List<Result> movies = [];
   List<Result> moviesLiked = [];
   List<Result> moviesDisliked = [];
+  int _match = 0;
 
   bool _isDragging = false;
   double _angle = 0;
   Offset _position = Offset.zero;
   Size _screenSize = Size.zero;
 
+  int get getMatch => _match;
   bool get isDragging => _isDragging;
   Offset get position => _position;
   double get angle => _angle;
   List<Result> get getMovies => movies;
   List<Result> get getMoviesLiked => moviesLiked;
   List<Result> get getMoviesDisliked => moviesDisliked;
+
+  List<Result> findMatchMovieOnList() {
+    int movieID = _match;
+    List<Result> result = [];
+    result.add(moviesLiked.firstWhere((element) => element.id == movieID));
+    return result;
+  }
 
   void setScreenSize(Size screenSize) => _screenSize = screenSize;
 
@@ -40,6 +49,7 @@ class CardProvider extends ChangeNotifier {
     moviesDisliked = [];
     movies = [];
     count = 0;
+    _match = 0;
   }
 
   void setMovies() async {
@@ -68,6 +78,7 @@ class CardProvider extends ChangeNotifier {
         like();
         moviesLiked.add(movies.firstWhere((element) => element.id == id));
         result = true;
+        _match = id;
         notifyListeners();
         break;
       case CardStatus.dislike:

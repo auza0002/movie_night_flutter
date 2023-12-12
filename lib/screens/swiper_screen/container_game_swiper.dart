@@ -34,6 +34,7 @@ class _ContainerGameScreenState extends State<ContainerGameScreen> {
         leading: IconButton(
           onPressed: () {
             provider.setInitalListValues();
+            gameProvider.initialGameStatus();
             Navigator.of(context).pop();
           },
           icon: const Icon(

@@ -45,6 +45,11 @@ class GameProvider with ChangeNotifier {
     }
   }
 
+  void initialGameStatus() {
+    _gameStatus = GameMatchStatus.noMatch;
+    notifyListeners();
+  }
+
   void voteMovie(
     String movieID,
     bool vote,
