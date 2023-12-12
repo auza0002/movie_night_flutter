@@ -1,12 +1,15 @@
 import 'dart:convert';
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
+
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'dart:async';
-import 'package:platform_device_id/platform_device_id.dart';
 
 class HTTPHelperMovieNight {
-  Future<bool> joinSession(String deviceID, String code) async {
-    bool sessionFound = false;
+  Future<String> joinSession(String deviceID, String code) async {
+    String sessionFound = "";
     String url =
         'https://movie-night-api.onrender.com/join-session?device_id=$deviceID&code=$code';
     Uri uri = Uri.parse(url);
@@ -14,7 +17,7 @@ class HTTPHelperMovieNight {
     if (response.statusCode == 200) {
       Map<String, dynamic> dataJSON = jsonDecode(response.body);
       if (dataJSON['data']['message'] != 'no match for code.') {
-        sessionFound = true;
+        sessionFound = dataJSON['data']['session_id'];
       }
     }
     return sessionFound;
@@ -32,6 +35,7 @@ class HTTPHelperMovieNight {
     };
     Uri uri = Uri.parse(url);
     Response response = await get(uri);
+
     if (response.statusCode == 200) {
       Map<String, dynamic> dataJSON = jsonDecode(response.body);
       data = dataJSON;
@@ -39,12 +43,40 @@ class HTTPHelperMovieNight {
     return data;
   }
 
+  Future<Map> voteMovie(String sessionID, String movieID, bool vote) async {
+    String url =
+        'https://movie-night-api.onrender.com/vote-movie?session_id=$sessionID&movie_id=$movieID&vote=$vote';
+    Map<String, dynamic> data = {
+      "data": {
+        "message": "error",
+        "movie_id": "00000",
+        "Boolean": "false",
+      }
+    };
+    Uri uri = Uri.parse(url);
+    Response response = await get(uri);
+    if (response.statusCode == 200) {
+      Map<String, dynamic> dataJSON = jsonDecode(response.body);
+      data = dataJSON;
+    }
+    return data;
+  }
+
+  static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+
   Future<String> initPlatformState() async {
     String? deviceId;
     try {
-      deviceId = await PlatformDeviceId.getDeviceId;
+      if (Platform.isIOS) {
+        deviceId = await deviceInfoPlugin.iosInfo
+            .then((value) => value.identifierForVendor);
+      } else if (Platform.isAndroid) {
+        deviceId = await deviceInfoPlugin.androidInfo.then((value) => value.id);
+      } else {
+        throw UnsupportedError('Unsupported platform');
+      }
     } on PlatformException {
-      deviceId = 'Failed to get deviceId.';
+      throw Exception('Failed to get platform version');
     }
     return deviceId!;
   }

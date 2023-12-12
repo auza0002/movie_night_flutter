@@ -1,9 +1,8 @@
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:movie_night_flutter/providers/game_provider.dart';
-import 'package:movie_night_flutter/screens/slider_screen/container_game_slider.dart';
-import 'package:movie_night_flutter/widgets/slider_widgets/image_swiper.dart';
+import 'package:movie_night_flutter/screens/swiper_screen/container_game_swiper.dart';
+import 'package:movie_night_flutter/widgets/swiper_widgets/image_swiper.dart';
 import 'package:provider/provider.dart';
 
 class SliderScreen extends StatefulWidget {
@@ -14,32 +13,28 @@ class SliderScreen extends StatefulWidget {
 }
 
 class _SliderScreenState extends State<SliderScreen> {
-  String myKey = "";
   String myDeviceID = "";
   String codeValue = "";
-  bool _validInput = false;
 
+  FToast fToast = FToast();
   void validator(String input) {
-    bool valid = RegExp(r'^[0-9]+$').hasMatch(input) && input.length < 5;
-    setState(() {
-      _validInput = valid;
-    });
+    bool valid = RegExp(r'^[0-9]+$').hasMatch(input) && input.length == 4;
+    if (valid) {
+      codeValue = input;
+    } else {
+      codeValue = "";
+    }
   }
 
   @override
   void initState() {
     super.initState();
-
-    myKey = context.read<GameProvider>().getMyKey;
-    myDeviceID = context.read<GameProvider>().getMyDeviceID;
+    fToast.init(context);
+    // context.read<GameProvider>().setMyKey(myDeviceID);
   }
 
   @override
   Widget build(BuildContext context) {
-    context.read<GameProvider>().setIsHost();
-    if (context.read<GameProvider>().getIsHost == false) {
-      context.read<GameProvider>().setMyKey(myDeviceID);
-    }
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         backgroundColor: const Color.fromARGB(151, 0, 0, 0),
@@ -100,7 +95,7 @@ class _SliderScreenState extends State<SliderScreen> {
                 children: [
                   Expanded(
                     child: Text(
-                      "My room : $myKey",
+                      "My room : ${context.read<GameProvider>().getMyKey}",
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -110,9 +105,10 @@ class _SliderScreenState extends State<SliderScreen> {
                   CupertinoButton(
                     child: const Icon(CupertinoIcons.gamecontroller_alt_fill),
                     onPressed: () {
+                      context.read<GameProvider>().setRoomOwner("host");
                       Navigator.of(context).push(
                         CupertinoPageRoute(
-                          builder: (context) => const ContainerScreen(),
+                          builder: (context) => const ContainerGameScreen(),
                         ),
                       );
                     },
@@ -132,8 +128,10 @@ class _SliderScreenState extends State<SliderScreen> {
                   SizedBox(
                     width: 200,
                     child: CupertinoTextField(
-                      onChanged: (text) {
-                        validator(text);
+                      onChanged: (value) {
+                        setState(() {
+                          validator(value);
+                        });
                       },
                       maxLength: 15,
                       keyboardType: TextInputType.number,
@@ -146,11 +144,26 @@ class _SliderScreenState extends State<SliderScreen> {
                           fontSize: 20,
                         ),
                       ),
-                      // controller: _textController,
                     ),
                   ),
                   CupertinoButton(
-                    onPressed: _validInput ? () {} : null,
+                    onPressed: () async {
+                      if (codeValue != "") {
+                        final reponse = await context
+                            .read<GameProvider>()
+                            .joinSession(codeValue);
+                        if (reponse) {
+                          context.read<GameProvider>().setRoomOwner("guest");
+                          Navigator.of(context).push(
+                            CupertinoPageRoute(
+                              builder: (context) => const ContainerGameScreen(),
+                            ),
+                          );
+                        } else {
+                          _showToast();
+                        }
+                      }
+                    },
                     child: const Icon(CupertinoIcons.arrow_turn_up_right),
                   ),
                 ],
@@ -160,5 +173,41 @@ class _SliderScreenState extends State<SliderScreen> {
         ),
       ),
     );
+  }
+
+  _showToast() {
+    Widget toast = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0),
+        color: const Color.fromRGBO(98, 98, 98, 1),
+      ),
+      child: const Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            CupertinoIcons.xmark_circle_fill,
+            color: CupertinoColors.white,
+          ),
+          SizedBox(
+            width: 12.0,
+          ),
+          Text(
+            "The room was not found",
+            style: TextStyle(color: CupertinoColors.white),
+          ),
+        ],
+      ),
+    );
+    fToast.showToast(
+        child: toast,
+        toastDuration: const Duration(seconds: 3),
+        positionedToastBuilder: (context, child) {
+          return Positioned(
+            bottom: 150.0,
+            left: 70.0,
+            child: child,
+          );
+        });
   }
 }

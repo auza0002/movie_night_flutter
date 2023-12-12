@@ -20,7 +20,7 @@ class CardMovie extends StatelessWidget {
               placeholder: MemoryImage(kTransparentImage),
               fadeInCurve: Curves.easeIn,
               image: NetworkImage(
-                context.watch<MoviesProvider>().imgPatch(
+                context.watch<MoviesProvider>().imgPach(
                       movies[0].results[index].posterPath,
                     ),
               ),
