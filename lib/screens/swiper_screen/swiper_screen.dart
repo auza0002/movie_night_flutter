@@ -13,11 +13,8 @@ class SliderScreen extends StatefulWidget {
 }
 
 class _SliderScreenState extends State<SliderScreen> {
-  String myKey = "";
   String myDeviceID = "";
   String codeValue = "";
-  String mySessionID = "";
-  String sessionID = "";
 
   FToast fToast = FToast();
   void validator(String input) {
@@ -33,18 +30,11 @@ class _SliderScreenState extends State<SliderScreen> {
   void initState() {
     super.initState();
     fToast.init(context);
-    myKey = context.read<GameProvider>().getMyKey;
-    myDeviceID = context.read<GameProvider>().getMyDeviceID;
-    mySessionID = context.read<GameProvider>().getMySessionID;
-    sessionID = context.read<GameProvider>().getSessionID;
+    // context.read<GameProvider>().setMyKey(myDeviceID);
   }
 
   @override
   Widget build(BuildContext context) {
-    context.read<GameProvider>().setIsHost();
-    if (context.read<GameProvider>().getIsHost == false) {
-      context.read<GameProvider>().setMyKey(myDeviceID);
-    }
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         backgroundColor: const Color.fromARGB(151, 0, 0, 0),
@@ -105,7 +95,7 @@ class _SliderScreenState extends State<SliderScreen> {
                 children: [
                   Expanded(
                     child: Text(
-                      "My room : $myKey",
+                      "My room : ${context.read<GameProvider>().getMyKey}",
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,

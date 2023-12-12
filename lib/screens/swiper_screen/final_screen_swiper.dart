@@ -4,6 +4,7 @@ import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_night_flutter/model/movide_model.dart';
 import 'package:movie_night_flutter/providers/card_provider.dart';
+import 'package:movie_night_flutter/providers/game_provider.dart';
 import 'package:movie_night_flutter/widgets/swiper_widgets/match_container.dart';
 import 'package:provider/provider.dart';
 
@@ -40,7 +41,8 @@ class _FinalScreenState extends State<FinalScreen> {
   @override
   Widget build(BuildContext context) {
     final provider = context.read<CardProvider>();
-    List<Result> match = provider.findMatchMovieOnList();
+    final gameProvider = context.read<GameProvider>();
+    List<Result> match = provider.findMatchMovieOnList(gameProvider.getMatch);
 
     return Stack(
       alignment: Alignment.topCenter,

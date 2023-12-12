@@ -63,7 +63,7 @@ class _SwiperCardState extends State<SwiperCard> {
         onPanUpdate: (details) {
           context.read<CardProvider>().updatePosition(details);
         },
-        onPanEnd: (details) {
+        onPanEnd: (details) async {
           bool result =
               context.read<CardProvider>().endPosition(widget.resultItem.id);
           context

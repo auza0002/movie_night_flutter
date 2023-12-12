@@ -11,8 +11,8 @@ class GameProvider with ChangeNotifier {
   String _mySessionID = '';
   String _sessionID = '';
   String _roomID = '';
-  bool _isHost = false;
   String _roomOwner = '';
+  String _match = "";
   GameMatchStatus _gameStatus = GameMatchStatus.noMatch;
 
   GameMatchStatus get getStatus => _gameStatus;
@@ -21,24 +21,14 @@ class GameProvider with ChangeNotifier {
   String get getMyKey => _myKey;
   String get getSessionID => _sessionID;
   String get getRoomID => _roomID;
-  bool get getIsHost => _isHost;
   String get getRoomOwner => _roomOwner;
-
-  void setIsHost() async {
-    var host = await HTTPHelperMovieNight().joinSession(_myDeviceID, _myKey);
-    if (host != "") {
-      _isHost = true;
-    } else {
-      _isHost = false;
-    }
-    notifyListeners();
-  }
-
+  String get getMatch => _match;
   Future<bool> joinSession(String code) async {
     var response = await HTTPHelperMovieNight().joinSession(_myDeviceID, code);
     if (response != "") {
       _sessionID = response;
       notifyListeners();
+
       return true;
     } else {
       return false;
@@ -63,10 +53,12 @@ class GameProvider with ChangeNotifier {
     var response =
         await HTTPHelperMovieNight().voteMovie(sessionID, movieID, vote);
     if (response['data']['match'] == true) {
+      _match = response['data']['movie_id'];
       _gameStatus = GameMatchStatus.match;
     } else {
       _gameStatus = GameMatchStatus.noMatch;
     }
+
     notifyListeners();
   }
 

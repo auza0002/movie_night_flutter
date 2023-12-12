@@ -13,16 +13,15 @@ class CardProvider extends ChangeNotifier {
       'https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=';
 
   List<Result> movies = [];
+  List<Result> allMovies = [];
   List<Result> moviesLiked = [];
   List<Result> moviesDisliked = [];
-  int _match = 0;
 
   bool _isDragging = false;
   double _angle = 0;
   Offset _position = Offset.zero;
   Size _screenSize = Size.zero;
 
-  int get getMatch => _match;
   bool get isDragging => _isDragging;
   Offset get position => _position;
   double get angle => _angle;
@@ -30,10 +29,12 @@ class CardProvider extends ChangeNotifier {
   List<Result> get getMoviesLiked => moviesLiked;
   List<Result> get getMoviesDisliked => moviesDisliked;
 
-  List<Result> findMatchMovieOnList() {
-    int movieID = _match;
+  List<Result> findMatchMovieOnList(String movieID) {
+    var myID = int.parse(movieID);
     List<Result> result = [];
-    result.add(moviesLiked.firstWhere((element) => element.id == movieID));
+    result.add(
+      allMovies.firstWhere((element) => element.id == myID),
+    );
     return result;
   }
 
@@ -49,7 +50,8 @@ class CardProvider extends ChangeNotifier {
     moviesDisliked = [];
     movies = [];
     count = 0;
-    _match = 0;
+
+    allMovies = [];
   }
 
   void setMovies() async {
@@ -57,15 +59,14 @@ class CardProvider extends ChangeNotifier {
     List<Movies> movies =
         await HTTPHelperTMDB.getDataMovieHomeScreen(url, _myKey, count++);
     this.movies = movies[0].results.reversed.toList();
+    allMovies.addAll(movies[0].results.reversed.toList());
     notifyListeners();
   }
 
   void updatePosition(DragUpdateDetails details) {
     _position += details.delta;
-
     final x = _position.dx;
     _angle = 45 * x / _screenSize.width;
-
     notifyListeners();
   }
 
@@ -76,14 +77,17 @@ class CardProvider extends ChangeNotifier {
     switch (status) {
       case CardStatus.like:
         like();
-        moviesLiked.add(movies.firstWhere((element) => element.id == id));
+        moviesLiked.add(
+          movies.firstWhere((element) => element.id == id),
+        );
         result = true;
-        _match = id;
         notifyListeners();
         break;
       case CardStatus.dislike:
         dislike();
-        moviesDisliked.add(movies.firstWhere((element) => element.id == id));
+        moviesDisliked.add(
+          movies.firstWhere((element) => element.id == id),
+        );
         break;
       default:
         resetPosition();
@@ -102,7 +106,7 @@ class CardProvider extends ChangeNotifier {
 
   CardStatus? getStatus() {
     final x = _position.dx;
-    final delta = 100;
+    const delta = 100;
 
     if (x >= delta) {
       return CardStatus.like;
